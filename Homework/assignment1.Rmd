@@ -1,0 +1,65 @@
+---
+title: "Assignment 1"
+author: "Sarah Fondots"
+date: "February 6, 2019"
+output: html_document
+---
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = FALSE,warning = FALSE,message = FALSE)
+```
+```{r}
+library(RColorBrewer)
+setwd("G:/School/2019/Spring/319 - Applied Statistics/Data")  
+wPower50 <- read.csv("WPOWER50.csv", header = TRUE)  
+```
+
+###Problem 1
+Generate a histogram of the variable Age.  Insert the graph here:  
+```{r}
+  age <- wPower50$AGE 
+  hist(age,col = brewer.pal(n=8, name = "Purples"))
+```
+
+###Problem 2
+Describe the shape of the graph:  
+This graph is skewed left
+
+###Problem 3
+Run the decriptive statistics on Age.  Insert the results from the session window and fill in the blanks below
+```{r}
+ n <- nrow(wPower50)
+ sampleMean <-mean(age)
+ sampleMedian <- median(age)
+ sampleStandardDeviation <- sd(age)
+ standardError <- sampleStandardDeviation/sqrt(n)
+ minimum <- min(wPower50$AGE)
+ maximum <- max(wPower50$AGE)
+ coefficientOfVariation <- sampleStandardDeviation/sampleMean
+```
+|Table for Problem 3|
+|------|-------|
+| N |  `r n`|
+|Sample Mean | `r sampleMean`|
+|Sample Median | `r sampleMedian`|
+|Sample Standard Deviation | `r sampleStandardDeviation`|
+|Standard Error | `r standardError`|
+|Minimum | `r minimum`|
+|Maximum | `r maximum`|
+|Cofficient of Variation | `r coefficientOfVariation`|
+
+###Problem 4
+```{r}
+rangeMin <- sampleMean - (sampleStandardDeviation*2)
+rangeMax <- sampleMean + (sampleStandardDeviation*2)
+```
+Range of $\bar{y} \pm 2s$ is `r rangeMin` to `r rangeMax`
+
+###Problem 5
+```{r}
+percent <- sum(wPower50$AGE > rangeMin & wPower50$AGE < rangeMax)/n * 100
+```
+What proportion of the values in the dataset fall within the interval?
+```{r}
+proportion <- sum(wPower50$AGE >rangeMin & wPower50$AGE < rangeMax)
+```
+The proportion of the values in the dataset that fall within the specified interval is: `r proportion` out of `r n` or `r percent`%

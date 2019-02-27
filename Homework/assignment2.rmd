@@ -1,0 +1,71 @@
+---
+title: "Assignment 2"
+author: "Sarah Fondots"
+date: "February 11, 2019"
+output: html_document
+
+---
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = FALSE,warning = FALSE,message = FALSE)
+```
+```{r}
+library(ggplot2)
+library(cowplot)
+```
+
+###Regression Analysis
+This dataset of size n=51 are the 50 states and the District of Columbia in the United States from the year 2002.  The variables are:
+
+* Birth rate per 1000 females 15-17 years old  
+* Birth rate per 1000 females 18-19 years old  
+* Violent crime rate per 100,000 citizens  
+* Teen birth rate per 1000 births  
+* Poverty rate (% of the state's population living in households with incomes below the federally defined poverty level)  
+
+We will consider the poverty rate to be the predictor(x) for teen birth rate (y).
+
+```{r}
+setwd("E:/School/2019/Spring/319 - Applied Statistics/Data")
+Poverty <- read.csv(file = "Poverty.csv",header = TRUE)
+```
+
+1.First, create a scatterplot for teen birth rate vs. poverty rate.  Describe the relationship that is exhibited on the graph. Identify any outliers, possible curvature.  
+
+```{r}
+Poverty_Percent <- Poverty$PovPct
+Teen_Birth <- Poverty$TeenBrth
+povPlot <- ggplot(Poverty,aes(x=Poverty_Percent, y=Teen_Birth))+geom_point(size=2.5)
+povPlot
+```
+This graph seems to have a positive linear relationship between poverty and teen birth rate.
+
+2. Next, calculate the linear correlation coefficient.  Report the value of *r* under the graph.  
+
+```{r}
+r <- cor(Poverty_Percent,Teen_Birth)
+povPlot
+```
+<center> *r* = `r r` </center>  
+  
+3. Finally, calculate the least squares model.  Assess the model for its usefulness in predicting and estimating teen birth rate using the poverty rate. To assess, use the values of R^2^ and CV.  
+
+````{r}
+rsqr <- summary(lm(Poverty_Percent~Teen_Birth, Poverty))$r.squared
+CV <- NULL
+```
+<center> $R^2$ = `r rsqr` </center>
+4. Estimate the teen birth rate when poverty rate is 12%.  Include a prediction interval for this value.  
+
+```{r}
+fit <- lm(Poverty_Percent~Teen_Birth, data = Poverty)
+x <- .12
+pRate <- fit$coefficients[1]+(fit$coefficients[2]*x)
+```
+Regression equation: Teen Birth Rate = `r fit$coefficients[1]` + `r fit$coefficients[2]` * Poverty Percent  
+
+When the poverty rate is 12% we predict the teen birth rate will be: `r pRate`  
+
+5. Create a scatterplot with prediction confidence bands around the regression line.  
+```{r}
+ggplot(Poverty,aes(x=Poverty_Percent, y=Teen_Birth))+geom_point(size=5)+geom_smooth(method = "lm")
+```
