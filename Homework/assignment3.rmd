@@ -1,0 +1,75 @@
+---
+title: "Assignment 3"
+author: "Sarah Fondots"
+date: "February 15, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = TRUE,warning = FALSE,message = FALSE)
+```
+
+```{r}
+# Dataset and R settings
+library(ggplot2)
+library(cowplot)
+
+setwd("E:/School/2019/Spring/319 - Applied Statistics/Data")
+drillRock <- read.csv(file = "drillrock.csv",header = TRUE)
+```
+
+##Hydraulic Rock Drilling
+Two processes for hydraulic drilling of rock are dry drilling and wet drilling.  In a dry hole, compressed air is forced down the drill rods to flush the cuttings and drive the hammer; in a wet hole water is forced down.  An experiment was conducted to determine whether the time *y* it takes to dry drill a distance of 5 feet in rock increases with depth *x* the results(extracted from *American Statistician*, February 1991) for one portion of the experiment are shown in the dataset.  
+
+1. Generate the scatterplot of y (time to drill 5 ft) vs. x (depth at which drilling begins). Describe the graph, and the relationship between x and y. Include the calculated value of the linear correlation, $r$, under the graph.  
+
+2. Conduct the complete simple linear regression analysis of the data. This will include the regression equation, a statement about $R^2$ and CV, and the t-test for non-zero slope.  
+
+3. Predict time (y) for a depth of $x=300$ feet. Include confidence intervals for both the mean value of $y$ and the individual predicted value of $y$.  
+
+4. What is the 95% confidence interval for the slope?  
+
+5. Be sure to write up your analysis with complete sentences, grammar, and punctuation. Include all relevant Minitab output.  
+
+### #1
+```{r}
+Drill_Time <- drillRock$time
+Drill_Depth <- drillRock$depth
+model <- lm(Drill_Time~Drill_Depth, data = drillRock)
+pred.int <- predict(model, interval = "prediction")
+myData <- cbind(drillRock, pred.int)
+
+drillPlot <- ggplot(myData,aes(x=Drill_Depth, y=Drill_Time))+ geom_point(size=2.5)+ stat_smooth(method = "lm")
+
+drillPlot+geom_line(aes(y=lwr),color="red", linetype = "dashed")+geom_line(aes(y=upr), color = "red", linetype = "dashed")
+
+r <- cor(Drill_Depth,Drill_Time)
+```
+Value of linear correlation is $r$= `r r`  
+
+### #2
+```{r}
+r2 <- r^2
+fit <- lm(Drill_Time~Drill_Depth, data = drillRock)
+tTest <- t.test(Drill_Depth,Drill_Time)
+tStat <- tTest$statistic
+pValue <- tTest$p.value
+```
+Regression equation: Drill Time = `r fit$coefficients[1]` + `r fit$coefficients[2]` * drill depth  
+$r^2$: `r r2`  
+CV:   
+*t*-test for non-zero slope: `r tStat`  
+
+### #3
+```{r}
+x <- 300
+pTime <- fit$coefficients[1]+(fit$coefficients[2]*x) 
+```
+The predicted time it would take to drill 300 feet given our regression equation is `r pTime`.  
+
+### #4
+```{r}
+interval <- confint(fit)
+
+```
+95% confidence interval for the slope: `r interval[2,1]` to `r interval[2,2]`
