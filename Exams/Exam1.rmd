@@ -1,0 +1,70 @@
+---
+title: "Exam1"
+author: "Sarah Fondots"
+date: "February 27, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = FALSE,warning = FALSE,message = FALSE)
+```
+
+```{r}
+# Dataset and R settings
+library(ggplot2)
+library(cowplot)
+
+setwd("E:/School/2019/Spring/319 - Applied Statistics/Data")
+internetUse <- read.csv(file = "internet_use.csv",header = TRUE)
+```
+This data describes Internet usage per country. It is hypothesized that the populations of wealthier countries will experience a greater share of internet penetration (y). The Internet Penetration Rate corresponds to the percentage of the total population of a given country or region that uses the Internet. A common measure of the wealth of a country is its per-capita GDP (x).  
+The initial hypothesized model was linear.
+
+1. Create a scatterplot of the data. Calculate the linear correlation coefficient. Write one to two sentences on the strength of the linear relationship between $x$ and $y$ using the graph and the value of $r$.  
+
+2. Give the linear regression model. Assess the utility of the model using the criteria that we established in class. This will include reporting and commenting on the coefficient of determination, the coefficient of variation, the t-test for non-zero slope and a 95% confidence interval for the mean.
+
+3. Use the equation to predict the internet penetration rate for the United States, whose per capita GDP is $x=47$.  Get the 95% prediction interval for the U.S.  
+
+4. Generate a scatterplot with 95% prediction bands around the line.
+
+#### Part 1 Scatterplot
+```{r}
+Internet_Penetration <- internetUse$Internet.Penetration
+Per_Capita_GDP <- internetUse$GDP.per.Capita.in.thousands.of..US
+
+plot1 <- ggplot(internetUse,aes(x=Per_Capita_GDP, y=Internet_Penetration))+geom_point(size=2.5)
+plot1
+
+r <- cor(Per_Capita_GDP,Internet_Penetration)
+```
+
+The linear correlation coefficient is $r$ = `r r` and a strong linear relationship is evident in the scatterplot of this data.  
+
+#### Part 2 Linear Regressin Model
+```{r}
+fit <- lm(Internet_Penetration~Per_Capita_GDP, data = internetUse)
+r <- cor(Per_Capita_GDP,Internet_Penetration)
+tTest <- t.test(Per_Capita_GDP,Internet_Penetration)
+tStat <- tTest$statistic
+pStat <- tTest$p.value
+```
+
+Regression equation: Internet Penetration = `r fit$coefficients[1]` + `r fit$coefficients[2]` * Per capita GDP  
+$r^2$ = `r (r^2)`  
+*t*-test = `r tStat`  
+*p*-value = `r pStat`
+
+#### Part 3 Prediction
+```{r}
+x <- 47
+pIP <- fit$coefficients[1]+(fit$coefficients[2]*x)
+```
+With a GDP of 47 we expect an internet penetration percent of `r (pIP*100)`%  
+
+#### Part 4 Scatterplot with confidence bands  
+```{r}
+plot2 <- ggplot(internetUse,aes(x=Per_Capita_GDP, y=Internet_Penetration))+geom_point(size=2.5)+geom_smooth(method = "lm")
+plot2
+```
+test 1 2 3
