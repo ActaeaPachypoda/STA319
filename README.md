@@ -1,6 +1,6 @@
 # STA 319 - Applied Statistics
 ### Homework Folder
-  contains all homework assignments
+  Contains all homework assignments
 
 ### Exam Folder
   Contains all exams
