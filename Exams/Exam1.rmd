@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = FALSE,warning = FALSE,message = FALSE)
+options(digits = 4)
 ```
 
 ```{r}
@@ -64,7 +65,11 @@ With a GDP of 47 we expect an internet penetration percent of `r (pIP*100)`%
 
 #### Part 4 Scatterplot with confidence bands  
 ```{r}
-plot2 <- ggplot(internetUse,aes(x=Per_Capita_GDP, y=Internet_Penetration))+geom_point(size=2.5)+geom_smooth(method = "lm")
-plot2
+model <- lm(Internet_Penetration~Per_Capita_GDP, data = internetUse)
+pred.int <- predict(model, interval = "prediction")
+myData <- cbind(internetUse, pred.int)
+
+plot2 <- ggplot(myData,aes(x=Per_Capita_GDP, y=Internet_Penetration))+geom_point(size=2.5)+geom_smooth(method = "lm")
+
+plot2+geom_line(aes(y=lwr),color="red", linetype = "dashed")+geom_line(aes(y=upr), color = "red", linetype = "dashed")
 ```
-test 1 2 3
