@@ -1,0 +1,38 @@
+---
+title: "Mid-Term Project"
+author: "Sarah Fondots"
+date: "March 8, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = FALSE,warning = FALSE,message = FALSE)
+options(digits = 4)
+```
+## Directions:  
+Answer the following questions after reading the Koleva paper.  Place your answers in a separate document.  Use coplete sentences to answer your questions.  Bring your completed answers (typed into a new document) to class on Monday.  We will discuss, then I will collect at the end of class.  
+
+
+#### Question 1  
+What is the definition of the stability of a drug substance?
+
+The stability of a drug substance or product can be defined as the capacity to remain within the established specifications, i.e to maintain its identity, strength, quality and purity throughout the retest or expiration dating periods.
+
+#### Question 2  
+What is the definition of shelf-life?  
+
+According to the Koleva paper the definition of shelf-life is the time period during which a drug product is expected to remain within the approved shelf-life specification, provided that it is stored under the conditions defined on the container label.
+
+#### Question 3  
+Discuss the purposes and goal of stability testing, and in general, a stability study.  
+
+#### Question 4  
+According to the paper, how is shelf-life determined?  
+
+
+
+#### Question 5  
+When can the analyst "pool" batches?  
+
+#### Question 6  
+When is it not appropriate to combine the data of all batches, which shelf-life is chosen for the product? 

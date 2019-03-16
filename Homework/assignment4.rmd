@@ -1,0 +1,53 @@
+---
+title: "Assignment 4"
+author: "Sarah Fondots"
+date: "March 2, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = FALSE,warning = FALSE,message = FALSE)
+options(digits = 4)
+```
+### Boston Assignment (Snow Day)
+
+```{r}
+## Path to image files 
+Analysis_of_Fit <- "E:/School/2019/Spring/319 - Applied Statistics/Homework/STA319/Data/A4_Analysis_of_Fit.png"
+Analysis_of_Variance <- "E:/School/2019/Spring/319 - Applied Statistics/Homework/STA319/Data/A4_Analysis_of_Variance.png"
+Coefficients <- "E:/School/2019/Spring/319 - Applied Statistics/Homework/STA319/Data/A4_Coefficients.png"
+```
+
+In the spring, an experiment was conducted on South Campus using pitchers from the WCU baseball team. The intent was to study which variables affect pitch velocity. The study examined the relationship between velocity and two independent predictors, peak posterior shear force (in body weights) and drive line accuracy (in inches). A first-order multiple linear regression model was calculated using Minitab.  
+
+![](`r Analysis_of_Fit`)
+
+![](`r Analysis_of_Variance`)
+
+![](`r Coefficients`)
+
+Use the Minitab output and the information from the lecture and slides to answer the following questions:  
+
+1. What is the model?  
+
+* Model:  
+
+2. Give the null and alternative hypotheses for the global F-test.  
+
+* H~0~: $\beta_1 = 0$  
+  H~1~: $\beta_1 \neq 0$
+
+3. What is the value of the F-test statistic, and its corresponding p-value? Do you reject H~0~?  
+
+* The value of our F-Statistic is:  and its corresponding p-value is:  given these values we reject the null hypothesis. 
+
+4. What is the appropriate coefficient of determination to use for this model? Give its value and comment on it.  
+
+* The appropriate coefficient of determination to use for this model is:  
+* The value is:  
+* Test
+
+5. What is the predicted pitch velocity, and a 95% confidence interval for the mean pitch velocity all pitchers who exhibit .5 peak posterior shear force and 0 drive line error?  
+
+* The predicted pitch velocity is:  
+* The 95% confidence interval for mean pitch velocity for all pitchers who exhibit .5 peak posterior shear force and 0 drive line error is:  
