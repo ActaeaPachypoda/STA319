@@ -15,8 +15,8 @@ options(digits = 4)
 library(ggplot2)
 library(cowplot)
 
-setwd("E:/School/2019/Spring/319 - Applied Statistics/Data")
-internetUse <- read.csv(file = "internet_use.csv",header = TRUE)
+setwd("E:/School/2019/Spring/319 - Applied Statistics/Homework/STA319/Data")
+internetUse <- read.csv("E:/School/2019/Spring/319 - Applied Statistics/Homework/STA319/Data/internet_use.csv",header = TRUE)
 ```
 This data describes Internet usage per country. It is hypothesized that the populations of wealthier countries will experience a greater share of internet penetration (y). The Internet Penetration Rate corresponds to the percentage of the total population of a given country or region that uses the Internet. A common measure of the wealth of a country is its per-capita GDP (x).  
 The initial hypothesized model was linear.
@@ -44,14 +44,23 @@ The linear correlation coefficient is $r$ = `r r` and a strong linear relationsh
 
 #### Part 2 Linear Regressin Model
 ```{r}
+library(papeR)
 fit <- lm(Internet_Penetration~Per_Capita_GDP, data = internetUse)
 r <- cor(Per_Capita_GDP,Internet_Penetration)
-tTest <- t.test(Per_Capita_GDP,Internet_Penetration)
-tStat <- tTest$statistic
-pStat <- tTest$p.value
+testSummary <- summary(fit)
+ 
+tStat <- testSummary$coefficients["Per_Capita_GDP","t value"]
+pStat <- testSummary$coefficients["Per_Capita_GDP", "Pr(>|t|)"]
 ```
-
+```{r, results='asis'}
+library(knitr)
+pretty_lm <- prettify(testSummary)
+tableOutput <- kable(pretty_lm)
+```
 Regression equation: Internet Penetration = `r fit$coefficients[1]` + `r fit$coefficients[2]` * Per capita GDP  
+
+`r tableOutput`  
+
 $r^2$ = `r (r^2)`  
 *t*-test = `r tStat`  
 *p*-value = `r pStat`
