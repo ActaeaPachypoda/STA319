@@ -1,0 +1,123 @@
+---
+title: "Exam 2"
+author: "Sarah Fondots"
+date: "April 23, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = FALSE,warning = FALSE,message = FALSE)
+options(digits = 4)
+```
+
+```{r}
+library(ggplot2)
+library(knitr)
+library(papeR)
+library(Hmisc)
+```
+
+### Multiple Linear Regression: U.S. Navy Hospitals
+The data concerns the needs for 17 U.S. Navy hospitals.
+
+```{r}
+hospital <- read.csv("G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/t4-11 hospital1.csv")
+
+```
+* y=monthly labor hours required  
+* x1=monthly X-ray exposures  
+* x2=monthly occupied bed days (a hospital that has one occupied bed day if one bed is occupied for an entire day)  
+* x3=average length of patients’ stay (in days)  
+
+The main objective of the regression analysis is to help the Navy evaluate the performance of its hospitals in terms of how many labor hours are used relative in terms of how many labor hours are needed. 
+
+### Scatterplots
+
+#### Model 1
+First, build the model to include all two-way interactions. This is model #1.
+
+```{r}
+fitM1 <- lm(hospital$Hours ~., data = hospital)
+model1 <- ggplot(hospital, aes(x = hospital$Xray + hospital$BedDays + hospital$Length,y = hospital$Hours)) 
+model1+ geom_point(size=2.5)+ stat_smooth(method = "lm",se=FALSE)
+
+lmSum <- summary(fitM1)
+lmSum
+```
+
+#### Model 2	
+Next, remove any two-way interactions that are not significant at the α=.20 level. Get the new, reduced model. This is model #2.
+```{r}
+corTable <- rcorr(as.matrix(hospital))
+test <- corTable[["r"]]
+tableOutput <- kable(test)
+tableOutput
+
+fit2 <- lm(hospital$Hours ~ hospital$BedDays+hospital$Length, data = hospital)
+lmSum2 <- summary(fit2)
+lmSum2
+model2 <- ggplot(hospital, aes(x = hospital$BedDays + hospital$Length,y = hospital$Hours)) 
+model2+ geom_point(size=2.5)+ stat_smooth(method = "lm",se=FALSE)
+```
+
+Finally, choose the model that you think is the best for this data. Use it to predict monthly labor hours required for the following hospital:  
+
+* Monthly x-ray exposures=12,000
+* Monthly Occupied Bed Days=4000
+* Average length of stay=6
+
+```{r}
+xRay <- 12000
+bedDays <- 4000
+lengStay <- 6
+
+mod <- fitM1$coefficients[1] + (fitM1$coefficients[2]*xRay) + (fitM1$coefficients[3]*bedDays) + (fitM1$coefficients[4]*lengStay)
+```
+
+With a model of Labor Hours = `r fitM1$coefficients[1]` + `r fitM1$coefficients[2]` * x-ray exposures + `r fitM1$coefficients[3]` * Occupied Bed Days + `r fitM1$coefficients[4]` * Average length of stay, we expect our monthly labor hours required to be `r mod`.  
+
+
+### Regression on Qualitative Variables: Shelf Position of Cereals
+```{r}
+cereal <- read.csv("G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/KCereals.csv")
+```
+
+Can we model the health rating of Kellogg’s cereals using box shelf position in the supermarket? A higher rating indicates a perceived healthier alternative.
+
+Build a model that includes rating (y) and the categorical variable shelf position (x). Use position=middle as the base level.
+```{r}
+cereal$Shelf.position <- relevel(cereal$Shelf.position, ref = "middle")
+
+fitC1 <- lm(cereal$Rating ~ cereal$Shelf.position)
+sumC <- summary(fitC1)
+sumC
+cerealPred <- predict(fitC1, interval = "confidence")
+
+```
+What is the hypothesized model? Explain how your dummy variables are constructed.  
+
+Rating = `r fitC1$coefficients[1]` + `r fitC1$coefficients[2]`* bottom shelf + `r fitC1$coefficients[3]`* top shelf
+
+Assess for model utility.  
+With an adjusted $R^2$ value of .29 our model does not do a great deal to predict the health rating of Kellogg’s cereals.  
+
+Choose your favorite cereal off the list and identify its shelf position. Use the model to predict the health rating of a cereal from that shelf. Include and interpret (in context) a 95% confidence interval for the mean rating of all Kellogg’s cereals on that shelf.
+
+Choosing Special K: Since Special K is on the bottom shelf the model predicts a health rating of Rating = `r fitC1$coefficients[1]` + `r fitC1$coefficients[2]`* bottom shelf or $40.25$.  The actual health rating of Special K is listed as $43.13$.  With a 95% confidence interval of all cereals on the bottom shelf having a health rating between $28.02$ and $52.47$  
+
+Using the results from the coefficients table from Minitab, which shelf’s rating is significantly different from the middle shelf? Explain your decision, including test statistic and p-value.  
+
+Looking at the coefficients table, the cereals on the top shelf seem significantly different from the cereals on the middle shelf.  With a test statistic of $3.26$ and a p-value of $.004$.  The confidence interval for the cereals on the top shelf is also much tighter with a range of $43.94$ to $58.06$.
+
+### Babyak paper
+
+#### What is meant by overfitting of data?  
+According to the Babyak paper overfitting yields overly optimistic model results: “findings” that appear in an overfitted model don’t really exist in the population and hence
+will not replicate. In other words the model fits the current data to well and does not represent real world variablity. This can happen often in machine learning and is called overtraining.  
+
+#### Why is it a problem?
+Overfitting is a problem because it can fail to account for the randomness of the real world and can therefore fail to account for it.  In an extreme case involving machine learning if the number of parameters is the same as or greater than the number of observations, then the model would perfectly predict the training data simply by memorizing the data in its entirety.  Such a model would fail severely when actually making accurate predictions.  
+
+#### How do you deal with overfitting? 
+
+We deal with overfitting by making sure that our models are not overly specific or extreme, by removing nonsignificant or redundant variables. We can also combat overfitting by collecting more data.

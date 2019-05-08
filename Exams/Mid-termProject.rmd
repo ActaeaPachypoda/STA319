@@ -10,7 +10,7 @@ knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = FALSE,warning = FALS
 options(digits = 4)
 ```
 ## Directions:  
-Answer the following questions after reading the Koleva paper.  Place your answers in a separate document.  Use coplete sentences to answer your questions.  Bring your completed answers (typed into a new document) to class on Monday.  We will discuss, then I will collect at the end of class.  
+Answer the following questions after reading the [Koleva paper](https://github.com/ActaeaPachypoda/STA319/blob/master/Data/stability-Koleva.pdf).  Place your answers in a separate document.  Use coplete sentences to answer your questions.  Bring your completed answers (typed into a new document) to class on Monday.  We will discuss, then I will collect at the end of class.  
 
 
 #### Question 1  
@@ -26,9 +26,9 @@ According to the Koleva paper the definition of shelf-life is the time period du
 #### Question 3  
 Discuss the purposes and goal of stability testing, and in general, a stability study.  
 
+
 #### Question 4  
 According to the paper, how is shelf-life determined?  
-
 
 
 #### Question 5  

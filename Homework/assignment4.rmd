@@ -13,9 +13,9 @@ options(digits = 4)
 
 ```{r}
 ## Path to image files 
-Analysis_of_Fit <- "E:/School/2019/Spring/319 - Applied Statistics/Homework/STA319/Data/A4_Analysis_of_Fit.png"
-Analysis_of_Variance <- "E:/School/2019/Spring/319 - Applied Statistics/Homework/STA319/Data/A4_Analysis_of_Variance.png"
-Coefficients <- "E:/School/2019/Spring/319 - Applied Statistics/Homework/STA319/Data/A4_Coefficients.png"
+Analysis_of_Fit <- "G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/A4_Analysis_of_Fit.png"
+Analysis_of_Variance <- "G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/A4_Analysis_of_Variance.png"
+Coefficients <- "G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/A4_Coefficients.png"
 ```
 
 In the spring, an experiment was conducted on South Campus using pitchers from the WCU baseball team. The intent was to study which variables affect pitch velocity. The study examined the relationship between velocity and two independent predictors, peak posterior shear force (in body weights) and drive line accuracy (in inches). A first-order multiple linear regression model was calculated using Minitab.  
@@ -30,7 +30,7 @@ Use the Minitab output and the information from the lecture and slides to answer
 
 1. What is the model?  
 
-* Model:  
+* Model:  $velocity(mph)= 58.12 + 20.35 peak  posterior shear force(BW)+ 1.692 drive  line  accuracy (in)$  
 
 2. Give the null and alternative hypotheses for the global F-test.  
 
@@ -45,9 +45,8 @@ Use the Minitab output and the information from the lecture and slides to answer
 
 * The appropriate coefficient of determination to use for this model is:  
 * The value is:  
-* Test
 
 5. What is the predicted pitch velocity, and a 95% confidence interval for the mean pitch velocity all pitchers who exhibit .5 peak posterior shear force and 0 drive line error?  
 
-* The predicted pitch velocity is:  
-* The 95% confidence interval for mean pitch velocity for all pitchers who exhibit .5 peak posterior shear force and 0 drive line error is:  
+* The predicted pitch velocity is:  (56.4264, 80.1717)  
+* The 95% confidence interval for mean pitch velocity for all pitchers who exhibit .5 peak posterior shear force and 0 drive line error is:  (65.1565, 71.4416)  

@@ -7,6 +7,7 @@ output: html_document
 ---
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = TRUE,warning = FALSE,message = FALSE)
+options(digits = 4)
 ```
 ```{r}
 library(ggplot2)
@@ -25,7 +26,7 @@ This dataset of size n=51 are the 50 states and the District of Columbia in the 
 We will consider the poverty rate to be the predictor(x) for teen birth rate (y).
 
 ```{r}
-setwd("E:/School/2019/Spring/319 - Applied Statistics/Data")
+
 Poverty <- read.csv(file = "Poverty.csv",header = TRUE)
 ```
 

@@ -1,0 +1,82 @@
+---
+title: "Assignment 5"
+author: "Sarah Fondots"
+date: "April 5, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = FALSE,warning = FALSE,message = FALSE)
+options(digits = 4)
+```
+
+```{r}
+# Dataset and R settings
+library(ggplot2)
+library(knitr)
+library(papeR)
+library(Hmisc)
+
+#setwd('E:/School/2019/Spring/319 - Applied Statistics/STA319')
+flag2 <- read.csv("G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/flag2.csv", header = TRUE)
+```
+
+# Multicollinearity
+
+### Part 1  
+
+Build the first-order model with y=contract, and include all independent variables, except DISTRICT. Copy and paste this model (and all subsequent models) into the table below, along with the other values.
+```{r}
+fit <- lm(flag2$PRICE ~ flag2$DOTEST + flag2$LBERATIO + flag2$STATUS + flag2$NUMBIDS + flag2$DAYSEST + flag2$RDLNGTH + flag2$PCTASPH + flag2$PCTBASE + flag2$PCTEXC + flag2$PCTMOB + flag2$PCTSTRC + flag2$PCTTRAF + flag2$SUB, data = flag2)
+summary(fit)
+flagPlot <- ggplot(flag2,aes(x=flag2$DOTEST + flag2$LBERATIO + flag2$STATUS + flag2$NUMBIDS + flag2$DAYSEST + flag2$RDLNGTH + flag2$PCTASPH + flag2$PCTBASE + flag2$PCTEXC + flag2$PCTMOB + flag2$PCTSTRC + flag2$PCTTRAF + flag2$SUB, y=flag2$PRICE))+ geom_point(size=2.5)+ stat_smooth(method = "lm",se=FALSE)
+flagPlot
+```
+Model:
+Price = `r fit$coefficients[1]` + `r fit$coefficients[2]`* DOTEST  + `r fit$coefficients[3]`* LBERATIO + `r fit$coefficients[4]`* STATUS + `r fit$coefficients[5]`* NUMBIDS + `r fit$coefficients[6]`* DAYSEST + `r fit$coefficients[7]`* RDLNGTH + `r fit$coefficients[8]`* PCTASPH + `r fit$coefficients[9]`* PCTBASE + `r fit$coefficients[10]`* PCTEXC + `r fit$coefficients[11]`* PCTMOB + `r fit$coefficients[12]`* PCTSTRC + `r fit$coefficients[13]`* PCTTRAF + `r fit$coefficients[14]`* SUB
+### Part 2  
+
+Examine model #1. Find variables that are highly correlated using pairwise correlations ( |r|>.8 indicates high correlation). Address the possible multicollinearity. Rerun the model.  
+```{r}
+corTable <- rcorr(as.matrix(flag2))
+test <- corTable[["r"]]
+tableOutput <- kable(test)
+
+tableOutput
+
+fit2 <- lm(flag2$PRICE ~ flag2$LBERATIO + flag2$STATUS + flag2$NUMBIDS + flag2$DAYSEST + flag2$RDLNGTH + flag2$PCTASPH + flag2$PCTBASE + flag2$PCTEXC + flag2$PCTMOB + flag2$PCTSTRC + flag2$PCTTRAF + flag2$SUB, data = flag2)
+summary(fit2)
+flagPlot2 <- ggplot(flag2,aes(x=flag2$LBERATIO + flag2$STATUS + flag2$NUMBIDS + flag2$DAYSEST + flag2$RDLNGTH + flag2$PCTASPH + flag2$PCTBASE + flag2$PCTEXC + flag2$PCTMOB + flag2$PCTSTRC + flag2$PCTTRAF + flag2$SUB, y=flag2$PRICE))+ geom_point(size=2.5)+ stat_smooth(method = "lm",se=FALSE)
+
+flagPlot2
+```
+Price = `r fit2$coefficients[1]` + `r fit2$coefficients[2]`* LBERATIO + `r fit2$coefficients[3]`* STATUS + `r fit2$coefficients[4]`* NUMBIDS + `r fit2$coefficients[5]`* DAYSEST + `r fit2$coefficients[6]`* RDLNGTH + `r fit2$coefficients[7]`* PCTASPH + `r fit2$coefficients[8]`* PCTBASE + `r fit2$coefficients[9]`* PCTEXC + `r fit2$coefficients[10]`* PCTMOB + `r fit2$coefficients[11]`* PCTSTRC + `r fit2$coefficients[12]`* PCTTRAF + `r fit2$coefficients[13]`* SUB
+
+### Part 3  
+
+Examine model #2. Remove all nonsignificant terms at α=0.25. Rerun.  
+```{r}
+fit2 <- lm(flag2$PRICE ~ flag2$LBERATIO + flag2$STATUS + flag2$NUMBIDS + flag2$DAYSEST + flag2$RDLNGTH + flag2$PCTASPH + flag2$PCTBASE + flag2$PCTEXC + flag2$PCTMOB + flag2$PCTSTRC + flag2$PCTTRAF + flag2$SUB, data = flag2)
+
+lmSum <- summary(fit2)
+pretty_lm <- prettify(lmSum)
+
+fit3 <- lm(flag2$PRICE ~ flag2$NUMBIDS + flag2$DAYSEST + flag2$PCTBASE + flag2$PCTEXC + flag2$PCTSTRC + flag2$SUB, data = flag2)
+summary(fit3)
+flagPlot3 <- ggplot(flag2,aes(x=flag2$NUMBIDS + flag2$DAYSEST + flag2$PCTBASE + flag2$PCTEXC + flag2$PCTSTRC + flag2$SUB, y=flag2$PRICE))+ geom_point(size=2.5)+ stat_smooth(method = "lm",se=FALSE)
+flagPlot3
+```
+Price = `r fit3$coefficients[1]` + `r fit3$coefficients[2]`* NUMBIDS + `r fit3$coefficients[3]`* DAYSEST + `r fit3$coefficients[4]`* PCTBASE + `r fit3$coefficients[5]`* PCTEXC + `r fit3$coefficients[6]`* PCTSTRC + `r fit3$coefficients[7]`* SUB
+
+###Part 5
+Examine model #4. Finally, remove nonsignificant interactions, and run the final model.  
+```{r}
+anova(fit3)
+finalFit <- lm(flag2$PRICE ~ flag2$NUMBIDS + flag2$DAYSEST + flag2$PCTBASE + flag2$PCTEXC + flag2$PCTSTRC, data = flag2)
+summary(finalFit)
+
+finalPlot <- ggplot(flag2,aes(x=flag2$NUMBIDS + flag2$DAYSEST + flag2$PCTBASE + flag2$PCTEXC + flag2$PCTSTRC, y=flag2$PRICE))+ geom_point(size=2.5)+ stat_smooth(method = "lm",se=FALSE)
+finalPlot
+```
+
+Price = `r finalFit$coefficients[1]` + `r finalFit$coefficients[2]`* NUMBIDS + `r finalFit$coefficients[3]`* DAYSEST + `r finalFit$coefficients[4]`* PCTBASE + `r finalFit$coefficients[5]`* PCTEXC + `r finalFit$coefficients[6]`* PCTSTRC

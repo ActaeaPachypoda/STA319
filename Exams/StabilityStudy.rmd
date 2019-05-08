@@ -1,0 +1,57 @@
+---
+title: "Stability Data Study"
+author: "Sarah Fondots"
+date: "March 20, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = FALSE,warning = FALSE,message = FALSE)
+```
+
+### Introduction
+**Data Set**: #1  
+**Compound**: 3119372  
+**Name of Drug**:  Foo Bar  
+**Treats**: Helps a patient come up with a name for a function or object  
+**Design of study**:  Long-term NDA   
+**Zone/Conditions**:  USA  
+
+### Explanation of a stability study
+As described in the [Koleva paper](https://github.com/ActaeaPachypoda/STA319/blob/master/Data/stability-Koleva.pdf) drug stability is the capacity to remain within the established specifications, i.e to maintain its identity, strength, quality and purity throughout the retest or expiration dating periods.  Therefore a stability tests are a series of tests designed to obtain information on the stability of a pharmaceutical product in order to define its shelf life and utilization period under specified package and storage conditions.
+
+### Analysis  
+#### Description of statistical methods  
+An NDA study estimates a drug expirations dating period applicable to all future batches.  As a long term study we tested our drug over the course of 12 months with samples taken and tested at 0,3,6,9 and 12 months.  As our intended market for this drug is the United States we followed all USDA guidlines and maintained testing conditions of $25^\circ c\pm 2^\circ$ and $60\%$ RH $\pm 5 \%$.  
+
+#### Plots  
+```{r}
+library(ggplot2)
+library(knitr)
+library(papeR)
+library(Hmisc)
+
+stabilityData <- read.csv("G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/Stability_data.csv",header = TRUE)
+
+Month <- stabilityData$Month
+Potency <- stabilityData$Potency
+Batch <- as.factor(stabilityData$batch)
+
+plot1 <- ggplot(stabilityData,aes(x=Month,y=Potency,color=Batch))+geom_point(size=2.5)+ stat_smooth(method = "lm",se=FALSE)+scale_color_manual(values = rainbow(n=3))
+
+plot1
+
+model <- lm(Potency~Month, data=stabilityData)
+modelSum <- summary(model)
+modelSum
+pretty_lm <- prettify(summary(model))
+tableOutput <- kable(pretty_lm)
+```
+
+
+#### Proposed shelf life 
+```{r}
+shelfLife <- predict(model, interval = "confidence")
+sLife <- (model$coefficients[1] - 95)/(model$coefficients[2]*-1)
+```
+Given our confidence bands at 95% the Shelf life for our drug is about 6 months.  This also fits with our model of $Potency = 101.487 - .941*month$ which gives a predicited shelf life of `r sLife` months.
