@@ -15,8 +15,7 @@ options(digits = 4)
 library(ggplot2)
 library(cowplot)
 
-setwd("E:/School/2019/Spring/319 - Applied Statistics/Homework/STA319/Data")
-internetUse <- read.csv("E:/School/2019/Spring/319 - Applied Statistics/Homework/STA319/Data/internet_use.csv",header = TRUE)
+internetUse <- read.csv("G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/internet_use.csv",header = TRUE)
 ```
 This data describes Internet usage per country. It is hypothesized that the populations of wealthier countries will experience a greater share of internet penetration (y). The Internet Penetration Rate corresponds to the percentage of the total population of a given country or region that uses the Internet. A common measure of the wealth of a country is its per-capita GDP (x).  
 The initial hypothesized model was linear.
