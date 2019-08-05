@@ -15,12 +15,11 @@ options(digits = 4)
 # Dataset and R settings
 library(ggplot2)
 library(cowplot)
-library(curl)
+library(RCurl)
 library(repmis)
 
-##drillRock <-source_data(url = "https://raw.github.com/ActaeaPachypoda/STA319/blob/master/Data/drillrock.csv",sep = ",", header = TRUE)
-#setwd('E:/School/2019/Spring/319 - Applied Statistics/STA319')
-drillRock <- read.csv(file = "G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/drillrock.csv",header = TRUE)
+data_url <- getURL("https://raw.githubusercontent.com/ActaeaPachypoda/STA319/master/Data/drillrock.csv")
+drillRock <- read.csv(text = data_url)
 ```
 
 ##Hydraulic Rock Drilling

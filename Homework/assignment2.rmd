@@ -12,6 +12,7 @@ options(digits = 4)
 ```{r}
 library(ggplot2)
 library(cowplot)
+library(RCurl)
 ```
 
 ###Regression Analysis
@@ -26,8 +27,8 @@ This dataset of size n=51 are the 50 states and the District of Columbia in the 
 We will consider the poverty rate to be the predictor(x) for teen birth rate (y).
 
 ```{r}
-
-Poverty <- read.csv(file = "Poverty.csv",header = TRUE)
+data_url <- getURL("https://raw.githubusercontent.com/ActaeaPachypoda/STA319/master/Data/Poverty.csv")
+Poverty <- read.csv(text = data_url)
 ```
 
 1.First, create a scatterplot for teen birth rate vs. poverty rate.  Describe the relationship that is exhibited on the graph. Identify any outliers, possible curvature.  

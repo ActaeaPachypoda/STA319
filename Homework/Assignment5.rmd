@@ -16,9 +16,10 @@ library(ggplot2)
 library(knitr)
 library(papeR)
 library(Hmisc)
+library(RCurl)
 
-#setwd('E:/School/2019/Spring/319 - Applied Statistics/STA319')
-flag2 <- read.csv("G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/flag2.csv", header = TRUE)
+data_url <- getURL("https://raw.githubusercontent.com/ActaeaPachypoda/STA319/master/Data/flag2.csv")
+flag2 <- read.csv(text = data_url)
 ```
 
 # Multicollinearity
