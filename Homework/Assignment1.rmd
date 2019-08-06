@@ -6,7 +6,7 @@ output: html_document
 runtime: shiny
 ---
 ```{r global_options, include=FALSE}
-knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = FALSE,warning = FALSE,message = FALSE)
+knitr::opts_chunk$set(fig.width = 12, fig.height = 8, echo = FALSE,warning = FALSE,message = FALSE)
 options(digits = 4)
 ```
 ```{r}
@@ -18,21 +18,54 @@ data_url <- getURL("https://raw.githubusercontent.com/ActaeaPachypoda/STA319/mas
 wPower50 <- read.csv(text = data_url)  
 ```
 
-###Problem 1
+### Problem 1
 Generate a histogram of the variable Age.  Insert the graph here:  
 ```{r}
-library(shiny)
-
 age <- wPower50$AGE 
 hist(age,col = brewer.pal(n=8, name = "Purples"))
 ```
 
-###Problem 2
+```{r}
+library(shiny)
+ui <- fluidPage(
+  # App title
+  titlePanel("Age of 50 most powerful women"),
+  # Sidebar layout with input and output definitions
+  sidebarLayout(
+    sidebarPanel(sliderInput(inputId = "bins",
+                             label = "Number of bins:",
+                             min = 1,
+                             max = 50,
+                             value = 10,)
+                 ),
+    # Main panel for displaying outputs
+    mainPanel(
+      # Output: Histogram
+      plotOutput(outputId = "distPlot")
+    )
+  )
+)
+
+server <- function(input, output) 
+  {
+  output$distPlot <- renderPlot({
+    x <- wPower50$AGE
+    bins <- seq(min(x),max(x), length.out = input$bins)
+    hist(x, breaks = bins, col = rainbow(input$bins), border = "white",
+         xlab = "Age",
+         main = "Histogram of Age")
+  })
+}
+shinyApp(ui = ui, server = server, options = list(width ="100%", height = 500))
+```
+  
+### Problem 2  
 Describe the shape of the graph:  
 This graph is skewed left
-
-###Problem 3
+  
+### Problem 3  
 Run the decriptive statistics on Age.  Insert the results from the session window and fill in the blanks below
+
 ```{r}
  n <- nrow(wPower50)
  sampleMean <-mean(age)
@@ -43,6 +76,7 @@ Run the decriptive statistics on Age.  Insert the results from the session windo
  maximum <- max(wPower50$AGE)
  coefficientOfVariation <- sampleStandardDeviation/sampleMean
 ```
+
 |Table for Problem 3|
 |------|-------|
 | N |  `r n`|
@@ -53,20 +87,26 @@ Run the decriptive statistics on Age.  Insert the results from the session windo
 |Minimum | `r minimum`|
 |Maximum | `r maximum`|
 |Cofficient of Variation | `r coefficientOfVariation`|
+  
+### Problem 4 
 
-###Problem 4
 ```{r}
 rangeMin <- sampleMean - (sampleStandardDeviation*2)
 rangeMax <- sampleMean + (sampleStandardDeviation*2)
 ```
-Range of $\bar{y} \pm 2s$ is `r rangeMin` to `r rangeMax`
 
-###Problem 5
+Range of $\bar{y} \pm 2s$ is `r rangeMin` to `r rangeMax`
+ 
+### Problem 5 
+
 ```{r}
 percent <- sum(wPower50$AGE > rangeMin & wPower50$AGE < rangeMax)/n * 100
 ```
+
 What proportion of the values in the dataset fall within the interval?
+
 ```{r}
 proportion <- sum(wPower50$AGE >rangeMin & wPower50$AGE < rangeMax)
 ```
+
 The proportion of the values in the dataset that fall within the specified interval is: `r proportion` out of `r n` or `r percent`%
