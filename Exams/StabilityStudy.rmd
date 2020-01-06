@@ -31,7 +31,7 @@ library(knitr)
 library(papeR)
 library(Hmisc)
 
-stabilityData <- read.csv("G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/Stability_data.csv",header = TRUE)
+stabilityData <- read.csv("E:/School/2019/Spring/319 - Applied Statistics/STA319/Data/Stability_data.csv",header = TRUE)
 
 Month <- stabilityData$Month
 Potency <- stabilityData$Potency
@@ -40,12 +40,17 @@ Batch <- as.factor(stabilityData$batch)
 plot1 <- ggplot(stabilityData,aes(x=Month,y=Potency,color=Batch))+geom_point(size=2.5)+ stat_smooth(method = "lm",se=FALSE)+scale_color_manual(values = rainbow(n=3))
 
 plot1
+model2 <- lm(Potency~Month + stabilityData$batch + Month*stabilityData$batch)
+summary(model2)
 
 model <- lm(Potency~Month, data=stabilityData)
 modelSum <- summary(model)
 modelSum
 pretty_lm <- prettify(summary(model))
 tableOutput <- kable(pretty_lm)
+
+sLife2 <- (model2$coefficients[1] - 95)/(model$coefficients[2]*-1)
+
 ```
 
 
@@ -54,4 +59,4 @@ tableOutput <- kable(pretty_lm)
 shelfLife <- predict(model, interval = "confidence")
 sLife <- (model$coefficients[1] - 95)/(model$coefficients[2]*-1)
 ```
-Given our confidence bands at 95% the Shelf life for our drug is about 6 months.  This also fits with our model of $Potency = 101.487 - .941*month$ which gives a predicited shelf life of `r sLife` months.
+Given our confidence bands at 95% the Shelf life for our drug is about 6 months.  This also fits with our model of $Potency = 100.3267 - .5144*month$ which gives a predicited shelf life of `r sLife2` months.

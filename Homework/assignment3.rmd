@@ -83,14 +83,17 @@ The predicted time it would take to drill 300 feet given our regression equation
 
 If you would like to see the predicted time for another value please enter it below:
 ```{r}
-#library(shiny)
-#numericInput(inputId = "num",label = NULL,value = 0, min = 0, step = 1)
-#server <- function(input, output) {
-  # You can access the value of the widget with input$num, e.g.
-  #output$value <- renderPrint({ input$num })
-#}
-#y <- as.numeric(input$num)
-#n <- fit$coefficients[1]+(fit$coefficients[2]*y) 
+library(shiny)
+
+ui <- fluidPage(
+  
+)
+
+server <- function(input, output, session) {
+  
+}
+
+shinyApp(ui, server)
 ```
 
 
@@ -98,6 +101,5 @@ If you would like to see the predicted time for another value please enter it be
 
 ```{r}
 interval <- confint(fit)
-
 ```
 95% confidence interval for the slope: `r interval[2,1]` to `r interval[2,2]`

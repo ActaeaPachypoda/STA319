@@ -6,16 +6,19 @@ output: html_document
 
 ---
 ```{r global_options, include=FALSE}
-knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = TRUE,warning = FALSE,message = FALSE)
+knitr::opts_chunk$set(fig.width = 12, fig.height = 8,echo = FALSE,warning = FALSE,message = FALSE)
 options(digits = 4)
 ```
+
 ```{r}
+# Bringing in necessary libraries
 library(ggplot2)
 library(cowplot)
 library(RCurl)
 ```
 
-###Regression Analysis
+### Regression Analysis
+
 This dataset of size n=51 are the 50 states and the District of Columbia in the United States from the year 2002.  The variables are:
 
 * Birth rate per 1000 females 15-17 years old  
@@ -36,7 +39,7 @@ Poverty <- read.csv(text = data_url)
 ```{r}
 Poverty_Percent <- Poverty$PovPct
 Teen_Birth <- Poverty$TeenBrth
-povPlot <- ggplot(Poverty,aes(x=Poverty_Percent, y=Teen_Birth))+geom_point(size=2.5)
+povPlot <- ggplot(Poverty,aes(x=Poverty_Percent, y=Teen_Birth)) + geom_point(size=2.5) + labs(x = "Poverty Percent", y = "Teen Births")
 povPlot
 ```
 This graph seems to have a positive linear relationship between poverty and teen birth rate.
@@ -75,6 +78,6 @@ myData <- cbind(Poverty, pred.int)
 
 povPlot2 <- ggplot(myData,aes(x=Poverty_Percent,y=Teen_Birth))+geom_point(size=2.5)+stat_smooth(method = "lm")
 
-povPlot2+geom_line(aes(y=lwr),color="red", linetype = "dashed")+geom_line(aes(y=upr), color = "red", linetype = "dashed")
+povPlot2+geom_line(aes(y=lwr),color="red", linetype = "dashed")+geom_line(aes(y=upr), color = "red", linetype = "dashed")+labs(x = "Poverty Percent", y = "Teen Births")
 
 ```

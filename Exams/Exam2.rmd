@@ -21,7 +21,7 @@ library(Hmisc)
 The data concerns the needs for 17 U.S. Navy hospitals.
 
 ```{r}
-hospital <- read.csv("G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/t4-11 hospital1.csv")
+hospital <- read.csv("E:/School/2019/Spring/319 - Applied Statistics/STA319/Data/t4-11 hospital1.csv")
 
 ```
 * y=monthly labor hours required  
@@ -37,6 +37,8 @@ The main objective of the regression analysis is to help the Navy evaluate the p
 First, build the model to include all two-way interactions. This is model #1.
 
 ```{r}
+#First model has interactions like stability project between all terms
+
 fitM1 <- lm(hospital$Hours ~., data = hospital)
 model1 <- ggplot(hospital, aes(x = hospital$Xray + hospital$BedDays + hospital$Length,y = hospital$Hours)) 
 model1+ geom_point(size=2.5)+ stat_smooth(method = "lm",se=FALSE)
@@ -79,7 +81,7 @@ With a model of Labor Hours = `r fitM1$coefficients[1]` + `r fitM1$coefficients[
 
 ### Regression on Qualitative Variables: Shelf Position of Cereals
 ```{r}
-cereal <- read.csv("G:/School/2019/Spring/319 - Applied Statistics/STA319/Data/KCereals.csv")
+cereal <- read.csv("E:/School/2019/Spring/319 - Applied Statistics/STA319/Data/KCereals.csv")
 ```
 
 Can we model the health rating of Kellogg’s cereals using box shelf position in the supermarket? A higher rating indicates a perceived healthier alternative.
